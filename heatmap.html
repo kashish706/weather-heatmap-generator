@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weather Heatmap</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 50%, #fbc2eb 100%);
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    table {
+      border-collapse: collapse;
+    }
+
+    td {
+      width: 90px;
+      height: 90px;
+      text-align: center;
+      vertical-align: middle;
+      font-size: 20px;
+      font-weight: bold;
+      border: 1px solid #ccc;
+    }
+
+    input[type="number"] {
+      width: 80px;
+      height: 80px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      border-radius: 8px;
+      border: 1px solid #aaa;
+    }
+
+    .legend {
+      font-size: 16px;
+      background-color: #ffffffcc;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .legend-color {
+      width: 25px;
+      height: 25px;
+      margin-right: 10px;
+      border-radius: 4px;
+      border: 1px solid #999;
+    }
+
+    .red { background-color: red; color: white; }
+    .orange { background-color: orange; color: black; }
+    .yellow { background-color: yellow; color: black; }
+    .green { background-color: green; color: white; }
+    .blue { background-color: blue; color: white; }
+
+    .output table td {
+      font-size: 22px;
+    }
+
+    .output h3 {
+      text-align: center;
+      margin-top: 0;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 25px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: #2196F3;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1976D2;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Weather Heatmap</h2>
+
+  <div class="container">
+    <div class="input">
+      <table id="inputTable">
+        <tr>
+          <td><input type="number" placeholder="°C"></td>
+          <td><input type="number" placeholder="°C"></td>
+          <td><input type="number" placeholder="°C"></td>
+        </tr>
+        <tr>
+          <td><input type="number" placeholder="°C"></td>
+          <td><input type="number" placeholder="°C"></td>
+          <td><input type="number" placeholder="°C"></td>
+        </tr>
+      </table>
+      <div style="text-align:center;">
+        <button onclick="generateHeatmap()">Generate Heatmap</button>
+      </div>
+    </div>
+
+    <!-- Heatmap Output -->
+    <div class="output">
+      <h3>Heatmap Output</h3>
+      <div id="heatmap"></div>
+    </div>
+
+    <!-- Legend -->
+    <div class="legend">
+      <h3>Legend</h3>
+      <div class="legend-item"><div class="legend-color red"></div> ≥ 40°C — <strong>Very Hot</strong></div>
+      <div class="legend-item"><div class="legend-color orange"></div> 30–39°C — <strong>Hot</strong></div>
+      <div class="legend-item"><div class="legend-color yellow"></div> 20–29°C — <strong>Warm</strong></div>
+      <div class="legend-item"><div class="legend-color green"></div> 10–19°C — <strong>Cool</strong></div>
+      <div class="legend-item"><div class="legend-color blue"></div> < 10°C — <strong>Cold</strong></div>
+    </div>
+  </div>
+
+  <script>
+    function getColor(temp) {
+      if (temp >= 40) return "red";
+      if (temp >= 30) return "orange";
+      if (temp >= 20) return "yellow";
+      if (temp >= 10) return "green";
+      return "blue";
+    }
+
+    function generateHeatmap() {
+      const inputTable = document.getElementById("inputTable");
+      const heatmapDiv = document.getElementById("heatmap");
+      let tableHTML = "<table>";
+
+      for (let row of inputTable.rows) {
+        tableHTML += "<tr>";
+        for (let cell of row.cells) {
+          const val = parseInt(cell.firstElementChild.value) || 0;
+          const color = getColor(val);
+          tableHTML += `<td class="${color}">${val}°C</td>`;
+        }
+        tableHTML += "</tr>";
+      }
+
+      tableHTML += "</table>";
+      heatmapDiv.innerHTML = tableHTML;
+    }
+  </script>
+
+</body>
+</html>
+
+
+
+<!-- tableHTML += '<td class="' + colorClass + '">' + val + '°C</td>'; -->
