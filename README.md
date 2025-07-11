@@ -31,4 +31,4 @@ Users can enter temperatures in a table, and the page will display a heatmap wit
 ## 🌐 Live Demo
 
 **View the live heatmap here**  
-🔗
+🔗 https://kashish706.github.io/weather-heatmap-generator/
